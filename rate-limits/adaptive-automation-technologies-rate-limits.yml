@@ -1,0 +1,44 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://documentation.adaptive.live/developer-guide/adaptive-api and the full documentation
+  corpus (https://documentation.adaptive.live/llms-full.txt, 295 pages), searched for rate
+  limit, throttle, quota, 429, Retry-After and X-RateLimit. Also probed live response headers
+  on 2026-09-07.
+description: >-
+  Adaptive publishes no rate limits for the Client API, and the live surface emits no
+  rate-limit headers. An honest zero: an agent or integration calling this API has no
+  documented budget and no runtime signal telling it how much of one is left.
+limit_count: 0
+limits: []
+response_headers:
+  observed: []
+  documented: []
+  detail: >-
+    A live 401 from GET https://app.adaptive.live/api/v3/client/users/list returned only
+    date, content-type and content-length. No RateLimit-*, X-RateLimit-*, Retry-After or
+    equivalent header was present. Headers on an AUTHENTICATED 200 could not be observed —
+    the surface requires a Client App credential we do not hold — so their absence on a
+    successful response is not asserted, only their absence on the rejection path.
+exhaustion_status: not documented
+exhaustion_note: >-
+  No 429 appears in either of the two per-operation error tables Adaptive publishes. The
+  documented failure statuses across the whole surface are 400, 401, 403 and 500.
+search_evidence:
+  corpus: https://documentation.adaptive.live/llms-full.txt
+  terms: [rate limit, ratelimit, throttl, quota, 429, Retry-After, X-RateLimit]
+  hits: 0
+  checked: '2026-09-07'
+adjacent_controls:
+  note: >-
+    Not rate limits, but the throttling-adjacent controls Adaptive DOES publish, so a reader
+    is not left thinking nothing bounds usage: alert rules carry a per-rule Cooldown
+    (seconds) with a 900-second default that bounds repeat NOTIFICATIONS, and the
+    activity-log export server-side scans ranges longer than 24 hours one day at a time. A
+    connection timeout is configurable globally on endpoints. None of these limit API call
+    volume.
+x-evidence:
+- url: https://app.adaptive.live/api/v3/client/users/list
+  http_status: 401
+  headers_returned: [date, content-type, content-length]
+  fetched: '2026-09-07'

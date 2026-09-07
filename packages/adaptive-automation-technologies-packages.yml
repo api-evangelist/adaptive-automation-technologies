@@ -1,0 +1,128 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://documentation.adaptive.live/developer-guide/pulumi,
+  https://documentation.adaptive.live/developer-guide/terraform,
+  https://documentation.adaptive.live/developer-guide/adaptive-cli and the public registries
+  (registry.terraform.io, proxy.golang.org, registry.npmjs.org, pypi.org, api.nuget.org).
+  Every version/published pair below was read from the registry metadata endpoint on
+  2026-09-07.
+description: >-
+  Adaptive does not publish a conventional per-language REST client SDK. Its first-party
+  distributed artifacts are infrastructure-as-code providers (Terraform, Pulumi) and a
+  cross-platform CLI. NOTE THE GAP: the Pulumi guide advertises four language SDK packages,
+  and three of them (npm, PyPI, NuGet) return 404/no-hit from their registries — only the Go
+  SDK is actually published. That is recorded per entry rather than smoothed over.
+packages:
+- language: hcl
+  registry: terraform
+  name: adaptive-scale/adaptive
+  url: https://registry.terraform.io/providers/adaptive-scale/adaptive/latest
+  source: https://github.com/adaptive-scale/terraform-provider-adaptive
+  install: 'terraform { required_providers { adaptive = { source = "adaptive-scale/adaptive" } } }'
+  official: true
+  version: 0.1.30
+  published: '2026-07-15'
+  downloads: 50299
+  tier: community
+  note: >-
+    Manages adaptive_resource, adaptive_endpoint and authorization grants. The docs state the
+    provider is still in beta. Registry metadata read from
+    https://registry.terraform.io/v1/providers/adaptive-scale/adaptive (HTTP 200).
+- language: go
+  registry: pkg.go.dev
+  name: github.com/adaptive-scale/pulumi-adaptive/sdk
+  url: https://pkg.go.dev/github.com/adaptive-scale/pulumi-adaptive/sdk
+  source: https://github.com/adaptive-scale/pulumi-adaptive
+  install: go get github.com/adaptive-scale/pulumi-adaptive/sdk
+  official: true
+  version: v0.3.0
+  published: '2026-08-26'
+  note: >-
+    Read from https://proxy.golang.org/github.com/adaptive-scale/pulumi-adaptive/sdk/@latest
+    (HTTP 200, tag sdk/v0.3.0). This is the only one of the four advertised Pulumi language
+    SDKs that resolves in its registry.
+- language: javascript
+  registry: npm
+  name: '@adaptive-scale/pulumi-adaptive'
+  url: https://www.npmjs.com/package/@adaptive-scale/pulumi-adaptive
+  source: https://github.com/adaptive-scale/pulumi-adaptive
+  install: npm install @adaptive-scale/pulumi-adaptive
+  official: true
+  published_to_registry: false
+  version: null
+  published: null
+  note: >-
+    ADVERTISED BUT ABSENT. https://documentation.adaptive.live/developer-guide/pulumi lists
+    this package for TypeScript/JavaScript, but
+    https://registry.npmjs.org/@adaptive-scale%2Fpulumi-adaptive returned HTTP 404
+    {"error":"Not found"} on 2026-09-07. Checked, nothing to record.
+- language: python
+  registry: pypi
+  name: pulumi-adaptive
+  url: https://pypi.org/project/pulumi-adaptive/
+  source: https://github.com/adaptive-scale/pulumi-adaptive
+  install: pip install pulumi-adaptive
+  official: true
+  published_to_registry: false
+  version: null
+  published: null
+  note: >-
+    ADVERTISED BUT ABSENT. https://pypi.org/pypi/pulumi-adaptive/json returned HTTP 404 on
+    2026-09-07. Checked, nothing to record.
+- language: dotnet
+  registry: nuget
+  name: AdaptiveScale.Adaptive
+  url: https://www.nuget.org/packages/AdaptiveScale.Adaptive
+  source: https://github.com/adaptive-scale/pulumi-adaptive
+  install: dotnet add package AdaptiveScale.Adaptive
+  official: true
+  published_to_registry: false
+  version: null
+  published: null
+  note: >-
+    ADVERTISED BUT ABSENT. https://api.nuget.org/v3-flatcontainer/adaptivescale.adaptive/index.json
+    returned BlobNotFound and the NuGet search API returned no matching package on 2026-09-07.
+    Checked, nothing to record.
+- language: shell
+  registry: cdn
+  name: adaptive
+  url: https://cli.adaptive.live/install.sh
+  source: https://github.com/adaptive-scale/adaptivecli
+  install: curl https://cli.adaptive.live/install.sh | bash
+  official: true
+  version: null
+  published: null
+  note: >-
+    The Adaptive CLI is distributed as an unpinned install script (HTTP 200 on 2026-09-07)
+    that detects OS/arch and downloads the matching build. The URL floats to latest and no
+    version is embedded in it, so a consumer cannot tell what they are getting either; that
+    is the finding. The docs show `adaptive version` printing "Adaptive CLI v0.2.38
+    (latest)". The GitHub releases API for adaptive-scale/adaptivecli returns an empty list,
+    so no dated release metadata exists to read. See cli/ for the command surface.
+- language: ruby
+  registry: homebrew
+  name: adaptive-scale/tap
+  url: https://github.com/adaptive-scale/homebrew-tap
+  source: https://github.com/adaptive-scale/homebrew-tap
+  install: brew tap adaptive-scale/tap
+  official: true
+  version: null
+  published: null
+  note: >-
+    First-party Homebrew tap (repo last pushed 2026-08-24). Homebrew taps have no registry
+    metadata endpoint; formula versions live in the repo's Formula/ directory. Checked,
+    no registry version to record.
+registries_checked:
+- registry.terraform.io
+- proxy.golang.org
+- registry.npmjs.org
+- pypi.org
+- api.nuget.org
+- azuresearch-usnc.nuget.org
+- github.com/adaptive-scale
+not_found:
+- crates.io — no Rust client library published
+- rubygems.org — no Ruby client library published
+- search.maven.org — no Java client library published
+- packagist.org — no PHP client library published

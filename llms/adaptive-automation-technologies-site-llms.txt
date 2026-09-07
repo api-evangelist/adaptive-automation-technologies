@@ -1,0 +1,206 @@
+# Adaptive
+
+> Adaptive is a trusted environment for running privileged AI agents in production. It provides the harness, tools, MCP registry, networking, and guardrails that let agents safely reach databases, Kubernetes clusters, VMs, cloud accounts, and internal services — under scoped, short-lived credentials with full audit and policy enforcement.
+
+Adaptive treats agents as the new perimeter. Instead of handing agents long-lived credentials or VPN access, teams give them a containment boundary: a policy envelope that brokers every connection, masks sensitive data in flight, records every action, and revokes access the moment a job ends. The same primitives also serve human operators, making Adaptive a unified privileged access layer for both people and autonomous systems.
+
+The platform is organized into three product surfaces:
+- **Bastion (Stratos)** — Infrastructure access for humans and agents. Just-in-time credentials, SSO/MFA, no shared secrets.
+- **Exo** — A secure agent harness with a tools/MCP registry, scoped networking, and guardrails for running privileged agents.
+- **Access / Authorization / Audit / Workloads / Monitor / Protect** — Underlying capabilities composed into the products above.
+
+## Core
+
+- [Home](https://adaptive.live): Agents are the new perimeter — contain the chaos. Trusted runtime harness for privileged agents in production.
+- [Pricing](https://adaptive.live/pricing): Plan tiers and what is included at each level.
+- [Request a Demo](https://adaptive.live/request-demo): Book a guided walkthrough with the Adaptive team.
+- [Security](https://adaptive.live/security): Security posture, certifications, and how Adaptive protects customer data.
+
+## Products
+
+- [Bastion / Stratos](https://adaptive.live/product/stratos): Infrastructure access for humans and agents — credentials are the #1 attack vector; stop sharing them.
+- [Exo](https://adaptive.live/product/exo): Secure harness for running agents with control and visibility — tools, MCP registry, networking, and guardrails.
+- [Access](https://adaptive.live/product/access): Share access, not credentials. Centralized, brokered access to databases, Kubernetes, VMs, and internal services.
+- [Authorization](https://adaptive.live/product/authorization): Granular, unified authorization framework with prebuilt policies for resources and actions.
+- [Audit](https://adaptive.live/product/audit): Audit every query across every interface — full session logs, screen recordings, SOC 2 / HIPAA reports.
+- [Workloads](https://adaptive.live/product/workloads): Orchestrate secrets and short-lived credentials for ETL pipelines, BI tools, and workload identities.
+- [Monitor](https://adaptive.live/product/monitor): Real-time database activity monitoring with unified alerts and access reports.
+- [Protect](https://adaptive.live/product/protect): Data masking and tokenization — intelligent and custom masks for structured and semi-structured data.
+- [More Products](https://adaptive.live/product/more): Anomaly detection, custom access policies, discovery & classification, ZTNA.
+
+## Use Cases — Agent Harness
+
+- [Coding Agents](https://adaptive.live/usecases/coding-agents): Run coding agents against real repos, infra, and data with scoped credentials.
+- [Autonomous Testing](https://adaptive.live/usecases/autonomous-testing): Let agents drive tests against staging and production-like environments safely.
+- [Browser Harness](https://adaptive.live/usecases/browser-harness): Sandbox browser-using agents with policy-controlled network egress and credential brokering.
+- [Bug Discovery](https://adaptive.live/usecases/bug-discovery): Agents reproduce, triage, and root-cause bugs with read-only access to live systems.
+- [Product Engineering](https://adaptive.live/usecases/product-engineering): Agents shipping changes through a controlled engineering loop.
+- [Migrations](https://adaptive.live/usecases/migrations): Plan, execute, and remediate database migrations with an agent harness — schema-scoped, one-shot credentials and a masked replica for dry-runs.
+- [Customer Support](https://adaptive.live/usecases/customer-support): Support agents with read-scoped access to customer data and workflows.
+- [Infra Automation](https://adaptive.live/usecases/infra-automation): Agents that operate infrastructure under tight policy envelopes.
+- [Data Analytics](https://adaptive.live/usecases/data-analytics): Analytical agents on top of warehouses with masked, governed access.
+- [Security Triage](https://adaptive.live/usecases/security-triage): Agents that investigate alerts with brokered access to logs and detections.
+- [Incident Response](https://adaptive.live/usecases/incident-response): Agents helping responders gather state and execute playbooks under audit.
+- [DevOps / CI-CD](https://adaptive.live/usecases/devops-cicd): Agents in pipelines with short-lived credentials and full audit trails.
+- [Web Research](https://adaptive.live/usecases/web-research): Browser/research agents with controlled egress and credential isolation.
+- [CRM Agents](https://adaptive.live/usecases/crm-agents): Agents acting in CRMs with field-level guardrails.
+- [Threat Hunting](https://adaptive.live/usecases/threat-hunting): Agents querying security telemetry with scoped, audited access.
+
+## Use Cases — Privileged Access & Compliance
+
+- [Privileged Access Management](https://adaptive.live/usecases/privileged-access-management): Modern PAM for humans and agents — JIT, MFA, SSO, full audit.
+- [VPN Alternative](https://adaptive.live/usecases/vpn-alternative): Replace flat-network VPNs with brokered, identity-scoped access.
+- [Protect PII / PHI](https://adaptive.live/usecases/protect-pii-phi): Mask sensitive data in flight before it ever reaches a client or agent.
+- [Accelerate Compliance](https://adaptive.live/usecases/accelerate-compliance): Evidence and controls for SOC 2, HIPAA, and similar frameworks.
+- [Compliance Audits](https://adaptive.live/usecases/compliance-audits): Pre-built reports and immutable logs for audit cycles.
+- [Data Privacy](https://adaptive.live/usecases/data-privacy): Enforce least-privilege and masking at the access layer.
+- [Reduce Insider Threat](https://adaptive.live/usecases/reduce-insider-threat): Remove standing privilege; replace with just-in-time, audited access.
+- [Protected Data for ETL](https://adaptive.live/usecases/protected-data-for-etl): Brokered, masked access for pipelines and BI tools.
+
+## Use Cases — Industries
+
+- [Finance](https://adaptive.live/usecases/finance): Privileged access and data protection for banks, fintechs, and insurance.
+- [Healthcare](https://adaptive.live/usecases/healthcare): HIPAA-aligned access controls for clinical and operational data.
+- [Technology](https://adaptive.live/usecases/technology): Engineering and ops teams running cloud-native infrastructure.
+
+## Compare
+
+- [Compare Index](https://adaptive.live/compare): Adaptive vs. other privileged access and agent-control platforms.
+- [Adaptive vs. StrongDM](https://adaptive.live/compare/strongdm)
+- [Adaptive vs. Teleport](https://adaptive.live/compare/teleport)
+
+## Integrations
+
+- [All Integrations](https://adaptive.live/integrations): Catalog of supported datasources, infrastructure, identity, and observability integrations.
+
+### Databases & Data Stores
+- [PostgreSQL](https://adaptive.live/integrations/postgresql)
+- [MySQL](https://adaptive.live/integrations/mysql)
+- [MariaDB](https://adaptive.live/integrations/mariadb)
+- [Microsoft SQL Server](https://adaptive.live/integrations/microsoft-sql-server)
+- [Oracle](https://adaptive.live/integrations/oracle)
+- [MongoDB](https://adaptive.live/integrations/mongodb)
+- [MongoDB Atlas](https://adaptive.live/integrations/mongodb-atlas)
+- [Amazon DocumentDB](https://adaptive.live/integrations/amazon-documentdb)
+- [Amazon DynamoDB](https://adaptive.live/integrations/amazon-dynamodb)
+- [Amazon Keyspaces](https://adaptive.live/integrations/keyspaces)
+- [Amazon Neptune](https://adaptive.live/integrations/amazon-neptune)
+- [Amazon ElastiCache](https://adaptive.live/integrations/amazon-elasticache)
+- [Redis](https://adaptive.live/integrations/redis)
+- [Cassandra](https://adaptive.live/integrations/cassandra)
+- [ScyllaDB](https://adaptive.live/integrations/scylladb)
+- [CockroachDB](https://adaptive.live/integrations/cockroachdb)
+- [YugabyteDB](https://adaptive.live/integrations/yugabyte)
+- [Neo4j](https://adaptive.live/integrations/neo4j)
+- [ClickHouse](https://adaptive.live/integrations/clickhouse)
+- [Apache Druid](https://adaptive.live/integrations/apache-druid)
+- [Elasticsearch](https://adaptive.live/integrations/elasticsearch)
+- [ProxySQL](https://adaptive.live/integrations/proxysql)
+- [Google Cloud Bigtable](https://adaptive.live/integrations/google-cloud-bigtable)
+- [Google Cloud Spanner](https://adaptive.live/integrations/google-cloud-spanner)
+- [Google Memorystore](https://adaptive.live/integrations/google-memorystore)
+- [Google Firestore](https://adaptive.live/integrations/google-firestore)
+- [Azure SQL](https://adaptive.live/integrations/azure-sql)
+- [Azure Cosmos DB](https://adaptive.live/integrations/azure-cosmos)
+
+### Data Warehouses & Analytics
+- [Snowflake](https://adaptive.live/integrations/snowflake)
+- [Databricks](https://adaptive.live/integrations/databricks)
+- [Amazon Redshift](https://adaptive.live/integrations/redshift)
+- [Google BigQuery](https://adaptive.live/integrations/google-bigquery)
+- [Azure Synapse](https://adaptive.live/integrations/azure-synapse)
+- [Starburst](https://adaptive.live/integrations/starburst)
+
+### Cloud Providers & Compute
+- [AWS](https://adaptive.live/integrations/aws)
+- [Google Cloud](https://adaptive.live/integrations/google-cloud)
+- [Azure](https://adaptive.live/integrations/azure)
+- [DigitalOcean](https://adaptive.live/integrations/digitalocean)
+- [Heroku](https://adaptive.live/integrations/heroku)
+- [Vultr](https://adaptive.live/integrations/vultr)
+- [AWS EC2](https://adaptive.live/integrations/aws-ec2)
+- [AWS ECS](https://adaptive.live/integrations/aws-ecs)
+- [AWS Lambda](https://adaptive.live/integrations/aws-lambda)
+- [AWS S3](https://adaptive.live/integrations/aws-s3)
+- [Google Compute Engine](https://adaptive.live/integrations/gce)
+- [Azure VM](https://adaptive.live/integrations/azure-vm)
+- [DigitalOcean Droplets](https://adaptive.live/integrations/digitalocean-droplets)
+
+### Kubernetes & Container Platforms
+- [Kubernetes](https://adaptive.live/integrations/kubernetes)
+- [Amazon EKS](https://adaptive.live/integrations/eks)
+- [Google GKE](https://adaptive.live/integrations/gke)
+- [Azure AKS](https://adaptive.live/integrations/aks)
+- [DigitalOcean DOKS](https://adaptive.live/integrations/doks)
+- [Rancher](https://adaptive.live/integrations/rancher)
+- [OpenShift](https://adaptive.live/integrations/openshift)
+- [Docker Registry](https://adaptive.live/integrations/docker-registry)
+
+### Remote Access Protocols
+- [SSH](https://adaptive.live/integrations/ssh)
+- [RDP](https://adaptive.live/integrations/rdp)
+- [VNC](https://adaptive.live/integrations/vnc)
+- [ZeroTier](https://adaptive.live/integrations/zerotier)
+
+### Networking & Firewalls
+- [Cisco](https://adaptive.live/integrations/cisco)
+- [Juniper](https://adaptive.live/integrations/juniper)
+- [Fortinet](https://adaptive.live/integrations/fortinet)
+- [Aruba](https://adaptive.live/integrations/aruba)
+- [Aruba Instant On](https://adaptive.live/integrations/aruba-instant-on)
+- [Palo Alto PAN-OS](https://adaptive.live/integrations/panos)
+- [HPE Switch](https://adaptive.live/integrations/hpe-switch)
+
+### Identity & SSO
+- [Okta](https://adaptive.live/integrations/okta)
+- [Azure Active Directory](https://adaptive.live/integrations/azure-active-directory)
+- [Google SSO](https://adaptive.live/integrations/google-sso)
+- [JumpCloud](https://adaptive.live/integrations/jumpcloud)
+- [OneLogin](https://adaptive.live/integrations/onelogin)
+- [LDAP](https://adaptive.live/integrations/ldap)
+
+### Observability & Logging
+- [Grafana](https://adaptive.live/integrations/grafana)
+- [Prometheus](https://adaptive.live/integrations/prometheus)
+- [Datadog](https://adaptive.live/integrations/datadog)
+- [Splunk](https://adaptive.live/integrations/splunk)
+- [AWS CloudWatch](https://adaptive.live/integrations/aws-cloudwatch)
+- [Coralogix](https://adaptive.live/integrations/coralogix)
+- [Kibana](https://adaptive.live/integrations/kibana)
+- [Syslog](https://adaptive.live/integrations/syslog)
+
+### CI/CD & Source Control
+- [Jenkins](https://adaptive.live/integrations/jenkins)
+- [GitLab](https://adaptive.live/integrations/gitlab)
+- [GitHub](https://adaptive.live/integrations/github-integration)
+
+### Streaming, Messaging & Pipelines
+- [Apache Kafka](https://adaptive.live/integrations/kafka)
+- [Confluent Cloud](https://adaptive.live/integrations/confluent-cloud)
+- [RabbitMQ](https://adaptive.live/integrations/rabbitmq)
+- [MinIO](https://adaptive.live/integrations/minio)
+- [Apache Airflow](https://adaptive.live/integrations/airflow)
+
+### Collaboration & Ticketing
+- [Slack](https://adaptive.live/integrations/slack)
+- [Microsoft Teams](https://adaptive.live/integrations/msteams)
+- [Jira](https://adaptive.live/integrations/jira-integration)
+- [Linear](https://adaptive.live/integrations/linear)
+- [Asana](https://adaptive.live/integrations/asana)
+- [Freshservice](https://adaptive.live/integrations/freshservice)
+- [Zoom](https://adaptive.live/integrations/zoom)
+
+### AI & Other
+- [OpenAI](https://adaptive.live/integrations/open-ai)
+
+## Company
+
+- [Blog](https://adaptive.live/blog): Articles on agent security, privileged access, and infrastructure governance.
+- [Careers](https://adaptive.live/careers): Open roles at Adaptive.
+- [Partners](https://adaptive.live/partners): Partner program and integrations.
+
+## Optional
+
+- [Privacy Policy](https://adaptive.live/privacy-policy)
+- [Terms and Conditions](https://adaptive.live/terms-and-conditions)
+- [Sitemap (XML)](https://adaptive.live/sitemap.xml)

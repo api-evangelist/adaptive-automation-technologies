@@ -1,0 +1,194 @@
+generated: '2026-09-07'
+method: derived
+source: >-
+  Derived from the sample response payloads and field tables published at
+  https://documentation.adaptive.live/developer-guide/adaptive-api. Adaptive publishes no
+  OpenAPI and no components.schemas, so entities and relationships below are read from the
+  provider's own documented JSON examples and field descriptions — not from a spec, and not
+  from live data (every endpoint is auth-gated).
+description: >-
+  The entity graph the Adaptive Client API exposes. Everything hangs off a Workspace. A
+  Resource is a registered upstream system (a database, cluster, VM, cloud account); an
+  Endpoint is a governed door onto a Resource; access to an Endpoint is granted to a User
+  either directly or through a Team, and an Authorization carries the policy. Sessions and
+  ActivityEvents are the audit record of what actually happened through an Endpoint.
+identifier_convention: >-
+  UUIDs throughout. The documented examples use an unprefixed UUID for users, resources,
+  endpoints, teams, workspaces and sessions, and prefixed-looking forms in the sample data
+  for authorizations (au...), scripts (sc...) and access requests (ar...). The docs do not
+  state that these prefixes are contractual, so they are recorded as observed in examples
+  only and should not be parsed.
+entities:
+- name: Workspace
+  id_field: workspaceId
+  description: The tenancy boundary. Every other entity carries a workspaceId.
+  source_operations: [all]
+- name: User
+  id_field: UserID
+  description: A member of a workspace.
+  fields: [UserID, Email, Enabled, Onboarded, FirstName, CreatedAt, LastLogin, Role, SSOProviderID, Teams]
+  roles: [Admin, Accessor, Approver, Auditor, Unknown]
+  note: >-
+    A role of Unknown means the person has no role in the workspace — typically someone
+    removed from the workspace whose endpoint grants were left in place. Such users may be
+    absent from List Users, which returns only current members, while still appearing in the
+    endpoints-with-users report. That divergence is the point of an access review.
+  source_operations: [GET /api/v3/client/users/list]
+- name: Team
+  id_field: id
+  description: A group of users, used to grant endpoint access collectively.
+  fields: [id, name, workspaceId, createdBy, createdAt, syncId, ssoProviderId]
+  note: >-
+    syncId and ssoProviderId are populated for teams provisioned via SSO or directory sync
+    and are empty strings otherwise. Only API-managed teams may be modified through the
+    team:write operations. SlackChannelID and internal notification plumbing are not returned.
+  source_operations: [GET /api/v3/client/teams/list]
+- name: Resource
+  id_field: id
+  description: A registered upstream system Adaptive brokers access to.
+  fields: [id, name, type, hostname]
+  types_observed: [postgres, mysql, sqlserver, mongo, cockroachdb, kubernetes, ssh, services, redshift, documentdb]
+  source_operations: [GET /api/v3/client/resources/list]
+- name: Endpoint
+  id_field: id
+  description: A governed access door onto a Resource, through which users and agents connect.
+  fields: [id, name, type, integration_type, status, integration_name]
+  status_values: [created, paused, terminated]
+  source_operations: [GET /api/v3/client/endpoints/list]
+- name: Authorization
+  id_field: id
+  description: An access policy attached to a resource type.
+  fields: [id, name, resourceType, status, description, workspaceId]
+  note: >-
+    The permission policy BODY lives in an encrypted field and is never returned — metadata
+    only. A consumer cannot reconstruct the effective policy from this API.
+  source_operations: [GET /api/v3/client/authorizations/list]
+- name: Script
+  id_field: id
+  description: A stored CLI script bound to an endpoint/session.
+  fields: [id, name, sessionId, isAutoGen, createdBy, createdAt, workspaceId, description]
+  note: >-
+    The script BODY is never returned, because a script command can embed inline
+    credentials. sessionId is the id of the endpoint/session the script belongs to.
+  source_operations: [GET /api/v3/client/scripts/list]
+- name: DatabaseSchema
+  id_field: null
+  description: The table/column schema of a database Resource.
+  fields: [table_catalog, table_schema, table_name, column_name, type, label]
+  note: Supported for MySQL, PostgreSQL and SQL Server resources only.
+  source_operations: ['GET /api/v3/client/schema/{resourceId}/info']
+- name: AccessRequest
+  id_field: requestId
+  description: A request for access to an Endpoint on a Resource, and its decision.
+  fields: [requestId, status, decidedBy, actionBy, userId, userEmail, resourceId, endpointId, accessType, duration, reason, decision, comment, externalRef]
+  access_types: [permaccess, tempaccess]
+  decided_by_values: [client_api, schedule]
+  source_operations: [POST /api/v3/client/access-request]
+- name: ActivityEvent
+  id_field: ID
+  description: One audited action, exported as a CSV row.
+  fields: [ID, ResourceID, EndpointID, SessionID, WorkspaceID, ClientIP, ActionName, Actor, Category, CompletedAt (UTC), AlertLevel, HostName, Username, ResourceName, Meta]
+  action_names_observed: [SessionStarted, EndpointConnectionStarted, EndpointConnectionEnded, EndpointServerEvent, AccessRequestApproved, AccessRequestRejected, AdminLockRequestCreated, AdminLockRequestApproved, AdminLockRequestRejected, ScheduledRestartCreated]
+  note: >-
+    The Command and Output keys inside the Meta column are base64-decoded to plaintext before
+    being written to the CSV. action_names_observed is drawn from documented examples and is
+    NOT asserted to be the complete vocabulary — Adaptive publishes no exhaustive list.
+  source_operations: [POST /api/v3/client/activity-log]
+- name: EndpointUserGrant
+  id_field: null
+  description: >-
+    One endpoint-and-user pair from the access report, with how access was granted and how
+    much it has been used. This is a projection, not a stored entity — a user with three
+    endpoints appears three times.
+  fields: [endpoint_id, workspace_id, endpoint_name, endpoint_status, is_inactive, user_id, user_email, user_first_name, user_role, integration_image, integration_name, direct_assignment, group_assignment, group_names, last_active, session_count]
+  note: >-
+    direct_assignment and group_assignment are not mutually exclusive — both are true when a
+    user holds an endpoint individually AND through a group. last_active is the zero time
+    0001-01-01T00:00:00Z when the user has never connected.
+  source_operations: [GET /api/v3/client/endpoints/with-users]
+relationships:
+- from: Workspace
+  to: User
+  type: has_many
+  via: workspaceId
+- from: Workspace
+  to: Team
+  type: has_many
+  via: workspaceId
+- from: Workspace
+  to: Resource
+  type: has_many
+  via: workspaceId
+- from: Workspace
+  to: Endpoint
+  type: has_many
+  via: workspaceId
+- from: Workspace
+  to: Authorization
+  type: has_many
+  via: workspaceId
+- from: User
+  to: Team
+  type: has_many
+  via: Teams[] embedded in the List Users response
+- from: Team
+  to: User
+  type: has_many
+  via: 'GET /api/v3/client/team/{teamId}/users/list/ (TeamID + UserID pairs)'
+- from: Team
+  to: Endpoint
+  type: has_many
+  via: 'GET /api/v3/client/team/{teamId}/endpoint/list/ (TeamID + EndpointID pairs)'
+- from: Endpoint
+  to: Resource
+  type: belongs_to
+  via: integration_name / integration_type resolve to a Resource name and type
+- from: Authorization
+  to: Resource
+  type: belongs_to
+  via: resourceType
+- from: Script
+  to: Endpoint
+  type: belongs_to
+  via: sessionId
+- from: AccessRequest
+  to: User
+  type: belongs_to
+  via: userId (or userEmail)
+- from: AccessRequest
+  to: Resource
+  type: belongs_to
+  via: resourceId
+- from: AccessRequest
+  to: Endpoint
+  type: belongs_to
+  via: endpointId
+- from: ActivityEvent
+  to: Resource
+  type: belongs_to
+  via: ResourceID
+- from: ActivityEvent
+  to: Endpoint
+  type: belongs_to
+  via: EndpointID
+- from: ActivityEvent
+  to: User
+  type: belongs_to
+  via: Actor (user email)
+- from: EndpointUserGrant
+  to: Endpoint
+  type: belongs_to
+  via: endpoint_id
+- from: EndpointUserGrant
+  to: User
+  type: belongs_to
+  via: user_id
+entity_count: 11
+relationship_count: 19
+naming_inconsistency_note: >-
+  Field casing is not uniform across the surface and a client must handle all three
+  conventions: PascalCase (UserID, Email, TeamID, ActionName), lowerCamelCase (workspaceId,
+  createdBy, resourceType, requestId) and snake_case (endpoint_id, user_email,
+  session_count, table_name). Even the success envelope varies — Add Users to Team returns
+  {"Status":"ok"} while Remove User from Team returns {"status":"ok"}. This is documented in
+  the provider's own examples, not inferred.

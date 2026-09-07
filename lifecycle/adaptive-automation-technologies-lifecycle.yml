@@ -1,0 +1,83 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://documentation.adaptive.live/releases,
+  https://documentation.adaptive.live/developer-guide/adaptive-api and
+  https://adaptive.live/ — searched for a versioning policy, deprecation policy, Sunset /
+  Deprecation headers (RFC 8594), an SLA and a status page.
+description: >-
+  Adaptive versions its platform in the documentation and its API in the URI path, but it
+  publishes NO deprecation policy, NO sunset commitment, NO SLA and NO status page. Each of
+  those is recorded as a searched absence below, not left blank — for a privileged access
+  broker sitting in the path of production database and infrastructure connections, the
+  missing status page is the most consequential of the four.
+api_versioning:
+  style: URI path segment
+  current: v3
+  prefix: /api/v3/client
+  header_versioning: false
+  date_pinning: false
+  prior_versions_documented: false
+  note: >-
+    No v1 or v2 documentation is published and no statement exists on whether earlier major
+    paths are still served. A consumer cannot tell from the docs how long v3 will be
+    supported or what a v4 migration would look like.
+platform_versioning:
+  style: semver
+  current: v1.1.8
+  release_notes: https://documentation.adaptive.live/releases
+  versioned_docs: https://documentation.adaptive.live/v1.1.x/
+  note: >-
+    Distinct from the API path version. Adaptive maintains a version-scoped documentation
+    tree for the v1.1.x line.
+  detail: changelog/adaptive-automation-technologies-changelog.yml
+deprecation_policy:
+  published: false
+  searched: true
+  detail: >-
+    No deprecation policy page, no notice period, and no deprecated-operation markers. The
+    published release notes carry Added / Changed / Improved / Fixed sections and no
+    Deprecated or Removed section on any of the three release pages.
+  headers:
+    deprecation: not documented
+    sunset: not documented
+    rfc8594: false
+deprecated_operations: []
+deprecated_operations_note: >-
+  None. Cannot be derived from a spec either — Adaptive publishes no OpenAPI.
+sla:
+  published: false
+  searched: true
+  detail: >-
+    No uptime commitment, credit schedule or support-response target is published. Pricing
+    is entirely sales-led (https://adaptive.live/pricing) and the pricing FAQ's "What kind of
+    support is included?" answer sits behind an accordion on a contact-sales page, so any
+    SLA is presumably contractual rather than public.
+status_page:
+  published: false
+  searched: true
+  probes:
+  - url: https://status.adaptive.live
+    result: DNS does not resolve (curl exit, HTTP 000)
+    checked: '2026-09-07'
+  detail: >-
+    No status.adaptive.live, and no status or uptime link in the site footer, the docs
+    navigation, or either llms.txt. Deliberately NO StatusPage pointer is emitted.
+support:
+  channels:
+  - type: email
+    value: info@adaptive.live
+  - type: slack
+    value: https://adaptivescale-group.slack.com
+    note: Named in the docs as a support channel for SSO configuration issues.
+  - type: docs
+    value: https://documentation.adaptive.live/overview/faqs
+  - type: sales
+    value: https://adaptive.live/request-demo
+self_hosting_lifecycle:
+  note: >-
+    Adaptive is deployable self-hosted (Kubernetes manifest, Helm, Docker, air-gapped VM) as
+    well as managed cloud, which shifts upgrade timing to the customer. The docs require
+    contacting info@adaptive.live for the chart version variant and a license key, so
+    version availability is gated on a vendor conversation rather than published.
+  docs: https://documentation.adaptive.live/install/system-requirements

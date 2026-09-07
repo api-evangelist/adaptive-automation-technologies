@@ -1,0 +1,177 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://documentation.adaptive.live/developer-guide/adaptive-api — the cross-cutting
+  request/response behaviour of the Adaptive Client API, read from the provider's own
+  reference and confirmed against live 401 responses on 2026-09-07. Adaptive publishes no
+  OpenAPI, so nothing here is derived from a spec.
+description: >-
+  How the Adaptive Client API behaves across its sixteen operations: auth style, replay
+  protection, pagination, filtering, versioning, error envelope, rate-limit signalling and
+  reversibility. The honest headline is that this is a small, deliberately narrow
+  administrative API — several conventions a mature REST surface would carry are simply
+  absent, and each absence is recorded as such rather than left blank.
+base_url: https://app.adaptive.live
+path_prefix: /api/v3/client
+api_style: >-
+  REST over HTTPS. JSON request bodies and JSON responses, except the activity log which
+  streams text/csv. Reads are GET; every write is POST (there is no PUT, PATCH or DELETE in
+  the published surface).
+
+authentication:
+  scheme: >-
+    Client App credential PAIR — X-Client-ID header plus Authorization Bearer client secret.
+    Both are required; neither alone authenticates.
+  docs: https://documentation.adaptive.live/developer-guide/adaptive-api
+  detail: authentication/adaptive-automation-technologies-authentication.yml
+
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: null
+  detail: >-
+    No Idempotency-Key header, no client-supplied request id, and no documented replay
+    semantics on any of the six POST operations. This matters most for POST
+    /api/v3/client/access-request, which both creates AND decides an access grant: a retried
+    call after an ambiguous network failure has no documented deduplication, so the caller
+    cannot distinguish "the grant was already made" from "make it again". The docs do
+    describe one adjacent safety behaviour — if an auto-approval schedule already decided the
+    request, that decision stands and the response reports decidedBy "schedule" with a
+    warning — but that is schedule precedence, not idempotency, and it does not protect
+    against a duplicate create.
+  evidence: >-
+    The Adaptive API reference documents request headers for every operation
+    (Content-Type, Authorization, X-Client-ID) and names no idempotency header anywhere.
+
+pagination:
+  supported: false
+  style: none
+  detail: >-
+    Every list operation (users, resources, endpoints, authorizations, scripts, teams, team
+    users, team endpoints, endpoints-with-users) returns a bare JSON array with no limit,
+    cursor, offset, page or has_more field documented. Response size is therefore unbounded
+    and grows with the workspace. GET /api/v3/client/endpoints/with-users returns one row per
+    endpoint-and-user pair, so it grows multiplicatively.
+
+filtering:
+  supported: partial
+  detail: >-
+    Only POST /api/v3/client/activity-log accepts filters, and they are in the request BODY
+    rather than the query string: startDate (required), endDate (required), and the optional
+    arrays resourceIDs, endpointIDs, sessionIDs, actionNames and actors. Filters combine with
+    AND across fields and IN (...) within each. No other operation accepts any filter or
+    search parameter.
+
+streaming:
+  supported: true
+  operation: POST /api/v3/client/activity-log
+  detail: >-
+    The response is streamed as text/csv with a timestamped filename in Content-Disposition,
+    so large exports begin arriving immediately rather than after the full scan. Ranges
+    longer than 24 hours are scanned server-side one day at a time. The Command and Output
+    keys inside the Meta column are base64-decoded to plaintext before being written.
+
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+metadata:
+  supported: false
+request_id_tracing:
+  supported: false
+  detail: >-
+    No request-id or correlation header is documented on request or response. Server-side,
+    every action IS attributed in the activity log (ActionName, Actor, ClientIP, SessionID),
+    so tracing is available after the fact through activity:read rather than from a response
+    header at call time.
+
+versioning:
+  style: URI path
+  current: v3
+  detail: >-
+    The version is a path segment — /api/v3/client/... . No version header, no date-pinned
+    version, and no published policy on how long a prior major path is served. The docs
+    version separately (v1.1.x is the current documented platform release line), and that
+    platform version is NOT the same thing as the v3 API path.
+  docs: https://documentation.adaptive.live/releases
+
+error_envelope:
+  shape: JSON object
+  fields:
+    error: A human-readable message string.
+  example: '{"error":"bad service token: empty service token"}'
+  rfc9457: false
+  detail: >-
+    Not application/problem+json. There is no machine-readable error code, type URI or
+    field-level detail — a client must match on the message string. Observed live on
+    2026-09-07 across all sixteen paths. Status codes carry the real signal; see
+    errors/adaptive-automation-technologies-problem-types.yml.
+
+rate_limiting:
+  documented: false
+  response_headers: none observed
+  detail: >-
+    No published limits and no RateLimit-*, X-RateLimit-* or Retry-After header on the live
+    401 responses. See rate-limits/adaptive-automation-technologies-rate-limits.yml.
+
+dry_run_mode:
+  supported: false
+  detail: >-
+    No preview, validate-only or dry-run parameter on any operation. The infrastructure-as-code
+    path is where rehearsal actually lives: Terraform `plan` and Pulumi `preview` both show
+    the intended change before applying it, so an operator managing Adaptive declaratively
+    gets a dry run that a direct API caller does not.
+
+reversibility:
+  grade: documented
+  detail: >-
+    Reversal paths exist for the write surface and are real, but NO published time window
+    bounds any of them, which is why this grades `documented` rather than `verified`. Do not
+    read a window into any row below — none is stated.
+  write_surfaces:
+  - operation: POST /api/v3/client/access-request
+    action: Creates and decides an access grant (approve or reject).
+    reversal: >-
+      Not reversible through the Client API. There is no revoke, cancel or expire operation
+      in the published sixteen. Revocation exists in the PRODUCT — an administrator revokes
+      or lets access lapse from the Access module — but that is a console action, not an API
+      one, so an agent that grants access cannot take it back through the same interface it
+      used to grant it.
+    window: null
+    self_limiting: >-
+      accessType tempaccess with a duration (e.g. 8h, 30m) makes the grant expire on its own.
+      That is the only bounded form of this write, and the bound is chosen by the caller at
+      creation time, not published as a policy.
+    docs: https://documentation.adaptive.live/developer-guide/adaptive-api
+  - operation: POST /api/v3/client/team/users/add
+    action: Adds users to an API-managed team.
+    reversal: POST /api/v3/client/team/users/remove
+    window: null
+  - operation: POST /api/v3/client/team/users/remove
+    action: Removes a user from an API-managed team.
+    reversal: POST /api/v3/client/team/users/add
+    window: null
+  - operation: POST /api/v3/client/team/endpoint/add
+    action: Adds endpoints to an API-managed team.
+    reversal: POST /api/v3/client/team/endpoint/remove
+    window: null
+  - operation: POST /api/v3/client/team/endpoint/remove
+    action: Removes an endpoint from an API-managed team.
+    reversal: POST /api/v3/client/team/endpoint/add
+    window: null
+  - operation: POST /api/v3/client/activity-log
+    action: Read-only export.
+    reversal: na
+    window: null
+  note: >-
+    Four of the six writes are symmetric add/remove pairs and are cleanly reversible by
+    calling the opposite operation. The consequential one — granting infrastructure access —
+    is the one with no API-side undo.
+
+cross_links:
+  authentication: authentication/adaptive-automation-technologies-authentication.yml
+  scopes: scopes/adaptive-automation-technologies-scopes.yml
+  errors: errors/adaptive-automation-technologies-problem-types.yml
+  lifecycle: lifecycle/adaptive-automation-technologies-lifecycle.yml
+  rate_limits: rate-limits/adaptive-automation-technologies-rate-limits.yml
+  data_model: data-model/adaptive-automation-technologies-data-model.yml

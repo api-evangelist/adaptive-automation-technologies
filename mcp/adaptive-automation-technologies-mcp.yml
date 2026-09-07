@@ -1,0 +1,111 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://documentation.adaptive.live/platform/organization/mcp-servers and
+  https://documentation.adaptive.live/developer-guide/adaptive-api; the headless endpoint was
+  probed live on 2026-09-07.
+description: >-
+  Adaptive ships a first-party, built-in remote MCP server as part of the platform — it is
+  not a separate download. Every Adaptive deployment (managed cloud or self-hosted) exposes
+  it on its own workspace host, so there is no single vendor-wide endpoint URL: the address
+  is https://<workspace-url>/mcp for the deployment you are entitled to. Agent actions are
+  authorized against the connecting user's own role and written to the activity log under
+  that user's name, so agent activity is reviewed exactly like a human session.
+status: published
+deployment:
+  mode: remote
+  endpoint: https://app.adaptive.live/api/v3/client/mcp
+  auth: oauth
+  verified: probed
+  note: >-
+    The endpoint recorded above is the HEADLESS path on Adaptive's managed cloud, and it is
+    the one that could be verified anonymously: POST
+    https://app.adaptive.live/api/v3/client/mcp returned HTTP 401 with
+    {"error":"bad service token: empty service token"} (content-type application/json) on
+    2026-09-07 — a real, live, auth-gated MCP surface, distinguishable from the SPA shell
+    that answers 200/text-html for every unrouted path on the same host. The INTERACTIVE
+    path documented for MCP clients is https://<workspace-url>/mcp, which is per-tenant;
+    https://app.adaptive.live/mcp returned the SPA shell, so the interactive path is not
+    mounted on the shared managed-cloud host and no vendor-wide interactive URL is asserted
+    here. There is NO stdio package: `adaptive mcp` in the CLI connects to and manages MCP
+    servers via Adaptive, it does not publish Adaptive itself over stdio.
+auth:
+  interactive:
+    scheme: oauth2
+    flow: browser consent screen, per-user
+    dynamic_client_registration: true
+    dcr_spec: RFC 7591
+    endpoints_published: >-
+      Issuer, Authorization, Token and Registration endpoints are exposed inside the
+      authenticated Organization > MCP Servers tab. They are NOT served at
+      /.well-known/oauth-authorization-server or /.well-known/oauth-protected-resource on any
+      host probed (see well-known/), so anonymous client discovery is not possible.
+    consent_controls:
+    - Scopes — chosen at consent time, always capped at the connecting user's own role
+    - Bind to a Client App (optional) — intersects the token's scopes with that app's allowed operations
+    - Token lifetime (TTL) — 1 day, 30 days, 90 days, 1 year, or until revoked
+  headless:
+    scheme: api-key
+    headers:
+      X-Client-ID: the Client App's public identifier
+      Authorization: Bearer <client-secret>
+    note: The same Client App credential pair used by the REST Client API.
+client_config: |
+  {
+    "mcpServers": {
+      "adaptive": {
+        "url": "https://<workspace-url>/mcp"
+      }
+    }
+  }
+supported_clients:
+- Claude
+- Cursor
+- VS Code
+- any MCP-compliant client (config snippets are generated in the MCP Servers tab)
+tools:
+  introspection: gated
+  introspection_evidence: >-
+    POST {"jsonrpc":"2.0","id":1,"method":"tools/list"} to
+    https://app.adaptive.live/api/v3/client/mcp returned HTTP 401 (empty service token).
+    The live tool set with inputSchema requires an authenticated Client App credential; no
+    tool schemas are asserted here.
+  capability_scopes_documented:
+  - users:read — read users
+  - resources:read — read resources
+  - endpoints:read — read endpoints
+  - schema:read — read database schema
+  - team:read — read teams
+  - team:write — manage teams
+  - activity:read — read activity
+  - authorizations:read — read authorizations
+  - scripts:read — read scripts
+  - access-request:write — create and decide access requests
+  note: >-
+    These are the capability scopes the consent screen and the Client App scope list
+    document. They are the authoritative published description of what an agent may do; the
+    per-tool names and input schemas are only obtainable by authenticated introspection.
+management:
+- Revoke a connection (token) to cut off an agent immediately
+- Delete a registered client to remove it entirely
+auditing: >-
+  Every tool call an agent makes is written to the activity log under the connecting user's
+  name.
+governance_note: >-
+  Adaptive also operates an MCP REGISTRY as a product feature inside Exo (its agent harness),
+  brokering third-party MCP servers to agents under policy. That is a customer-facing
+  capability, not an Adaptive-published MCP server, and is deliberately not counted here.
+x-evidence:
+- url: https://app.adaptive.live/api/v3/client/mcp
+  http_status: 401
+  content_type: application/json; charset=utf-8
+  body: '{"error":"bad service token: empty service token"}'
+  fetched: '2026-09-07'
+- url: https://app.adaptive.live/mcp
+  http_status: 200
+  content_type: text/html
+  note: SPA shell ("PAGE YOU ARE LOOKING DOES NOT EXIST") — not an MCP endpoint.
+  fetched: '2026-09-07'
+- url: https://documentation.adaptive.live/platform/organization/mcp-servers
+  http_status: 200
+  fetched: '2026-09-07'

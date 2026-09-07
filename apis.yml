@@ -1,23 +1,158 @@
 aid: adaptive-automation-technologies
 name: Adaptive Automation Technologies
-description: 'Adaptive Automation Technologies is a company surfaced via the API Evangelist harvest backlog
-  (source: secondary-market) and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Adaptive Automation Technologies, Inc. — trading as Adaptive (adaptive.live) — builds a
+  privileged access management and data security platform that brokers credential-less,
+  fully audited access to databases, Kubernetes clusters, virtual machines, cloud accounts,
+  network appliances and internal web services for both human operators and autonomous AI
+  agents. The platform is sold as three surfaces: Bastion/Stratos (just-in-time
+  infrastructure and browser access with SSO and MFA), Exo (a secure agent harness with a
+  tools/MCP registry, scoped networking and guardrails), and a shared trust layer covering
+  authorization, audit, data masking, database activity monitoring, discovery and
+  classification, and compliance reporting. Adaptive exposes a documented sixteen-operation
+  REST Client API at /api/v3/client, a built-in remote MCP server secured by OAuth with
+  RFC 7591 dynamic client registration, a cross-platform CLI, and first-party Terraform and
+  Pulumi providers. It runs as managed cloud on app.adaptive.live or self-hosted on
+  Kubernetes, Docker or an air-gapped VM.
+image: https://adaptive.live/og/adaptive.png
 url: https://raw.githubusercontent.com/api-evangelist/adaptive-automation-technologies/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment
 specificationVersion: '0.20'
 created: '2026-09-07'
 modified: '2026-09-07'
 tags:
 - Company
-apis: []
+- Security
+- Privileged Access Management
+- Identity and Access Management
+- Data Security
+- Agents
+- Model Context Protocol
+- Infrastructure
+- Databases
+- Kubernetes
+- Compliance
+- Audit
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: adaptive-automation-technologies-client-api
+  name: Adaptive Client API
+  description: >-
+    The Adaptive Client API is a sixteen-operation REST API under /api/v3/client that
+    exposes an Adaptive workspace to external systems: list users, resources, endpoints,
+    authorizations, scripts and teams; fetch a database resource schema; manage membership
+    of API-managed teams; stream the activity log as CSV for SIEM and compliance export;
+    create and decide an access request in a single call from an external approval system
+    such as Jira, Freshservice or ServiceNow; and pull the endpoint-and-user access report
+    that powers access reviews. Requests authenticate with a Client App credential pair
+    sent as an X-Client-ID header and an Authorization Bearer client secret, and a key can
+    be restricted to any subset of ten operation scopes.
+  humanURL: https://documentation.adaptive.live/developer-guide/adaptive-api
+  baseURL: https://app.adaptive.live
+  tags:
+  - Access Management
+  - Audit
+  - Identity
+  - Compliance
+  - Teams
+  properties:
+  - type: Documentation
+    url: https://documentation.adaptive.live/developer-guide/adaptive-api
+  - type: Authentication
+    url: authentication/adaptive-automation-technologies-authentication.yml
+  - type: OAuthScopes
+    url: scopes/adaptive-automation-technologies-scopes.yml
+  - type: ErrorCatalog
+    url: errors/adaptive-automation-technologies-problem-types.yml
+  - type: Conventions
+    url: conventions/adaptive-automation-technologies-conventions.yml
+  - type: DataModel
+    url: data-model/adaptive-automation-technologies-data-model.yml
+  - type: RateLimits
+    url: rate-limits/adaptive-automation-technologies-rate-limits.yml
+- aid: adaptive-automation-technologies-mcp-server
+  name: Adaptive MCP Server
+  description: >-
+    Adaptive ships a built-in Model Context Protocol server that lets AI agents — Claude,
+    Cursor, VS Code and other MCP clients — work with an Adaptive workspace. Interactive
+    clients connect to https://<workspace-url>/mcp over OAuth, registering themselves via
+    RFC 7591 dynamic client registration and obtaining a token through a browser consent
+    screen where the operator picks scopes, an optional Client App binding, and a token
+    lifetime. Headless automation reaches the same server at /api/v3/client/mcp with a
+    Client App's X-Client-ID and bearer client secret. Every tool call is authorized
+    against the connecting user's own role and written to the activity log under that
+    user's name.
+  humanURL: https://documentation.adaptive.live/platform/organization/mcp-servers
+  baseURL: https://app.adaptive.live
+  tags:
+  - Model Context Protocol
+  - Agents
+  - Access Management
+  properties:
+  - type: Documentation
+    url: https://documentation.adaptive.live/platform/organization/mcp-servers
+  - type: MCPServer
+    url: mcp/adaptive-automation-technologies-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/adaptive-automation-technologies-tool-crosswalk.yml
 common:
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://adaptive.live/
+- type: DeveloperPortal
+  url: https://documentation.adaptive.live/
+- type: Documentation
+  url: https://documentation.adaptive.live/
+- type: APIReference
+  url: https://documentation.adaptive.live/developer-guide/adaptive-api
+- type: GettingStarted
+  url: https://documentation.adaptive.live/install/cloud-setup
+- type: GitHubOrganization
+  url: https://github.com/adaptive-scale
+- type: Blog
+  url: https://adaptive.live/blog
+- type: Pricing
+  url: https://adaptive.live/pricing
+- type: SignUp
+  url: https://app.adaptive.live/
+- type: Support
+  url: https://documentation.adaptive.live/overview/faqs
+- type: TermsOfService
+  url: https://adaptive.live/terms-and-conditions
+- type: PrivacyPolicy
+  url: https://adaptive.live/privacy-policy
+- type: TrustCenter
+  url: security/adaptive-automation-technologies-trust-center.yml
+- type: LLMsTxt
+  url: llms/adaptive-automation-technologies-llms.txt
+- type: Packages
+  url: packages/adaptive-automation-technologies-packages.yml
+- type: SDKs
+  url: packages/adaptive-automation-technologies-packages.yml
+- type: CLI
+  url: cli/adaptive-automation-technologies-cli.yml
+- type: ChangeLog
+  url: changelog/adaptive-automation-technologies-changelog.yml
+- type: Lifecycle
+  url: lifecycle/adaptive-automation-technologies-lifecycle.yml
+- type: Conformance
+  url: conformance/adaptive-automation-technologies-conformance.yml
+- type: Compliance
+  url: conformance/adaptive-automation-technologies-conformance.yml
+- type: Webhooks
+  url: asyncapi/adaptive-automation-technologies-webhooks.yml
+- type: Plans
+  url: plans/adaptive-automation-technologies-plans-pricing.yml
+- type: DomainSecurity
+  url: security/adaptive-automation-technologies-domain-security.yml
+x-enrichment:
+  date: '2026-09-07'
+  status: enriched
+  artifacts_added: 20
+  pass: local-v3

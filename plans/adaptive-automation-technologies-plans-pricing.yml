@@ -1,0 +1,41 @@
+generated: '2026-09-07'
+method: searched
+source: https://adaptive.live/pricing
+description: >-
+  Adaptive publishes NO priced plans. The pricing page carries no tiers, no per-seat or
+  per-resource rates, no free tier and no trial — it is a contact-sales page whose whole
+  offer is "Talk to us and we will put together something that fits", followed by a lead
+  form (Name, Email, Company, Phone, Message). plan_count is therefore 0, and that is the
+  finding rather than a gap in the harvest.
+url: https://adaptive.live/pricing
+plan_count: 0
+plans: []
+pricing_model: contact-sales
+published_pricing: false
+free_tier: false
+trial: false
+trial_note: >-
+  No self-serve trial is published. The pricing FAQ includes the question "Do you offer a
+  proof of concept?", so a POC path exists, but its answer is inside a collapsed accordion
+  and the terms are not published.
+deployment_options_priced:
+- on-premises / self-hosted
+- managed cloud
+deployment_note: >-
+  The page states Adaptive "spans infrastructure access, agent security, and browser
+  isolation" and can "deploy on-premises or as managed cloud" — both are sales-quoted.
+  Self-hosted installation additionally requires contacting info@adaptive.live for a chart
+  version variant and a license key, so even the deployment artifacts are gated on a
+  conversation.
+product_surfaces_offered:
+- name: 'Exo: Agent Security'
+  description: Ephemeral environments per agent run, guardrails, full query/command visibility, no exposed secrets.
+- name: 'Stratos: Browser Security'
+  description: Policy-driven isolation for SaaS and internal web apps, URL filtering, session controls.
+- name: 'Bastion: Infrastructure Access'
+  description: JIT access to databases, Kubernetes, VMs and cloud infrastructure with SSO and MFA enforced.
+x-evidence:
+- url: https://adaptive.live/pricing
+  http_status: 200
+  fetched: '2026-09-07'
+  note: Page body read in full; contains no numeric price, currency or tier name.

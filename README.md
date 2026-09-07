@@ -64,5 +64,27 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Adaptive Automation Technologies is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.nasdaqprivatemarket.com/
+Adaptive Automation Technologies, Inc. — trading as **Adaptive** — builds a privileged access
+management and data security platform that brokers credential-less, fully audited access to
+databases, Kubernetes clusters, virtual machines, cloud accounts, network appliances and internal
+web services, for both human operators and autonomous AI agents. It is sold as three surfaces:
+**Bastion/Stratos** (just-in-time infrastructure and browser access with SSO and MFA), **Exo** (a
+secure agent harness with a tools/MCP registry, scoped networking and guardrails), and a shared
+trust layer covering authorization, audit, data masking, database activity monitoring, discovery
+and classification, and compliance reporting.
+
+Adaptive exposes a documented sixteen-operation REST Client API under `/api/v3/client`, a built-in
+remote MCP server secured by OAuth with RFC 7591 dynamic client registration, a cross-platform CLI,
+and first-party Terraform and Pulumi providers. It runs as managed cloud on `app.adaptive.live` or
+self-hosted on Kubernetes, Docker or an air-gapped VM. No OpenAPI, AsyncAPI, GraphQL SDL, Protobuf
+or WSDL is published on any host.
+
+- Website: https://adaptive.live/
+- Documentation: https://documentation.adaptive.live/
+- API reference: https://documentation.adaptive.live/developer-guide/adaptive-api
+- MCP servers: https://documentation.adaptive.live/platform/organization/mcp-servers
+- GitHub: https://github.com/adaptive-scale
+
+> The previous stub listed `https://www.nasdaqprivatemarket.com/` as this company's website. That
+> was the secondary-market venue the company was surfaced from, not a site the company operates,
+> and it has been corrected.

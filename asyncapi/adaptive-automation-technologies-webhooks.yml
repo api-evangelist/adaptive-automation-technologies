@@ -1,0 +1,116 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://documentation.adaptive.live/integrations/siemwebhook,
+  https://documentation.adaptive.live/platform/alerts,
+  https://documentation.adaptive.live/integrations/msteams and
+  https://documentation.adaptive.live/platform/organization (the default logger setting).
+description: >-
+  Adaptive publishes NO AsyncAPI document, but it does ship a real outbound event surface, so
+  this is a webhook catalog rather than an event spec. Two distinct delivery paths exist and
+  they should not be conflated: (1) an EVENT EXPORT path, where Adaptive continuously pushes
+  every activity/audit event to a logging destination, one option for which is a customer-run
+  HTTP receiver Adaptive ships as a container image; and (2) a NOTIFICATION path, where rule
+  matches post rich alert messages into Slack or Microsoft Teams via incoming webhook URLs
+  the customer supplies. Neither path lets a customer register an arbitrary HTTPS callback
+  for a chosen event type — there is no general-purpose subscription API.
+asyncapi_published: false
+asyncapi_searched: true
+asyncapi_note: >-
+  No /asyncapi.yaml, /asyncapi.json or event-catalog document was found on any Adaptive host,
+  and no AsyncAPI reference appears anywhere in the 295-page documentation corpus.
+webhook_surfaces:
+- id: siem-webhook
+  name: Custom SIEM Webhook
+  direction: outbound
+  kind: event-export
+  docs: https://documentation.adaptive.live/integrations/siemwebhook
+  detail: >-
+    A receiver Adaptive distributes as a container image (public.ecr.aws/c8d4o2c1/siemwebhook,
+    documented at v1.0.15, amd64 and arm64 variants) which the customer deploys on Docker or
+    Kubernetes. Adaptive posts audit and session events to it; the receiver then writes them
+    out. Because the customer runs the receiver, the endpoint URL is theirs, not Adaptive's.
+  transport: HTTP
+  default_port: 8080
+  authentication:
+    scheme: shared secret
+    parameter: SHARED_SECRET
+  configuration:
+    OUTPUT_TYPE: where the receiver writes (e.g. file)
+    FILE_LOCATION: output path
+    FORMATTER: payload format (e.g. json)
+    MAX_SIZE: log rotation size
+    MAX_BACKUP: rotated files retained
+    MAX_AGE: retention in days
+    PORT: listen port
+  payload_schema_published: false
+  payload_note: >-
+    The event payload shape is not published as a schema. The closest published description
+    of the same event data is the activity-log CSV column list — ID, ResourceID, EndpointID,
+    SessionID, WorkspaceID, ClientIP, ActionName, Actor, Category, CompletedAt (UTC),
+    AlertLevel, HostName, Username, ResourceName, Meta — which is documented at
+    https://documentation.adaptive.live/developer-guide/adaptive-api. It is recorded here as
+    the nearest published shape, NOT asserted to be the webhook payload.
+- id: alert-notifications
+  name: Alert notifications to Slack / Microsoft Teams
+  direction: outbound
+  kind: notification
+  docs: https://documentation.adaptive.live/platform/alerts
+  detail: >-
+    Rules are boolean expressions over captured events (data queries, schema changes,
+    privilege grants, SSH and Kubernetes commands, session activity). A match raises an
+    alert and posts a rich, event-aware message to the channels attached to that rule.
+    Repeat occurrences bump an occurrence count instead of re-notifying.
+  destinations:
+  - Slack — OAuth Slack app, or a Slack incoming webhook URL plus API/bot token
+  - Microsoft Teams — a Teams connector, or a Teams Workflow (Power Automate) incoming webhook
+  controls:
+    enablement: >-
+      Nothing fires until a rule is explicitly enabled. A fresh workspace has no rules, so no
+      events are evaluated and no notifications are sent.
+    cooldown_seconds_default: 900
+    cooldown_detail: Per-rule minimum gap between repeat notifications for the same alert.
+  rule_categories: [schema changes, data reads, data writes, permission changes, transactions, denied or failed statements]
+- id: request-notifications
+  name: Access and membership request notifications
+  direction: outbound
+  kind: notification
+  docs: https://documentation.adaptive.live/integrations/msteams
+  detail: >-
+    Membership requests and JIT access requests send a notification card to the configured
+    Teams channel, each carrying a deep link to the Requests page for review. Delivered over
+    the same customer-supplied incoming webhook URL.
+alternative_log_destinations:
+  detail: >-
+    The SIEM webhook is one of several default-logger options; the others are pull/push
+    integrations rather than webhooks and are listed for completeness.
+  options: [Splunk, Datadog, Coralogix, AWS CloudWatch Logs, Syslog, SIEM Webhook]
+  note: TLS-encrypted syslog forwarding was added in v1.1.8.
+  docs: https://documentation.adaptive.live/integrations/all
+event_names_observed:
+- SessionStarted
+- EndpointConnectionStarted
+- EndpointConnectionEnded
+- EndpointServerEvent
+- AccessRequestApproved
+- AccessRequestRejected
+- AdminLockRequestCreated
+- AdminLockRequestApproved
+- AdminLockRequestRejected
+- ScheduledRestartCreated
+event_names_note: >-
+  Drawn from documented examples (the activity-log actionNames filter and the release notes).
+  Adaptive publishes no exhaustive event vocabulary, so this list is observed, NOT complete,
+  and is not asserted to be the full set.
+subscription_api: false
+subscription_note: >-
+  There is no API to register, list or delete a webhook subscription. Delivery destinations
+  are configured in the console (Organization > default logger; Alerts > Channels) and none
+  of the sixteen Client API operations touches them.
+pull_alternative:
+  operation: POST /api/v3/client/activity-log
+  detail: >-
+    The pull-based counterpart to the push surface — streams the same activity data as CSV,
+    filtered by date range, resource, endpoint, session, action name and actor. For an
+    integrator who cannot host a receiver, this is the supported path.
+  docs: https://documentation.adaptive.live/developer-guide/adaptive-api

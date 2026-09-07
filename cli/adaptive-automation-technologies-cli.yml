@@ -1,0 +1,106 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://documentation.adaptive.live/developer-guide/adaptive-cli,
+  https://documentation.adaptive.live/developer-guide/admin-cli,
+  https://documentation.adaptive.live/developer-guide/web-cli and
+  https://documentation.adaptive.live/developer-guide/booster-cli
+description: >-
+  `adaptive` is Adaptive's first-party cross-platform CLI and the primary way a human or a
+  script actually USES the platform — it is a gateway that fronts each resource's own native
+  client (psql, mongosh, kubectl, ssh, RDP, SFTP, S3) while Adaptive performs the
+  authentication, authorization and session recording. It is a different surface from the
+  Client API: the API administers the workspace, the CLI connects through it. Session history
+  is preserved for later playback and audit.
+name: adaptive
+binary: adaptive
+version_documented: v0.2.38
+version_note: >-
+  Read from the `adaptive version` output shown in the docs. The GitHub releases API for
+  adaptive-scale/adaptivecli returns an empty list, so no dated release metadata is
+  published; the install script is unpinned. See packages/.
+install:
+- method: script
+  command: curl https://cli.adaptive.live/install.sh | bash
+  platforms: [linux, macos]
+  detail: >-
+    Detects OS and CPU architecture automatically, including Apple Silicon under Rosetta, and
+    appends `adaptive` to PATH by editing the correct shell startup file (.zshrc, .bashrc or
+    .bash_profile).
+  probed: true
+  http_status: 200
+- method: homebrew
+  command: brew tap adaptive-scale/tap
+  source: https://github.com/adaptive-scale/homebrew-tap
+  detail: First-party Homebrew tap (also adaptive-scale/adaptivecli, "Brew tap for adaptive CLI").
+authentication:
+  command: adaptive login
+  flow: >-
+    Opens a browser login prompt and writes a token to ~/.adaptive/token. The token file is
+    also read by the Terraform and Pulumi providers.
+  logout: adaptive logout
+commands:
+- name: admin
+  summary: Create resources, endpoints, authorizations etc. in Adaptive via CLI
+  docs: https://documentation.adaptive.live/developer-guide/admin-cli
+- name: cluster
+  summary: Create an Adaptive cluster via CLI
+- name: completion
+  summary: Generate the shell autocompletion script
+- name: connect
+  summary: Connect to an infrastructure resource via a specified endpoint
+- name: context
+  summary: Manage contexts for the Adaptive CLI
+- name: exec
+  summary: Run a one-shot command against a direct endpoint
+- name: help
+  summary: Help about any command
+- name: ingress
+  summary: Manage ingresses
+  docs: https://documentation.adaptive.live/developer-guide/adaptive-ingress
+- name: login
+  summary: Log in to Adaptive
+- name: logout
+  summary: Log out of Adaptive
+- name: mcp
+  summary: Connect and manage MCP servers via Adaptive
+  note: >-
+    This manages MCP servers brokered THROUGH Adaptive (the Exo tools/MCP registry). It does
+    not expose Adaptive itself over stdio — Adaptive's own MCP server is remote. See mcp/.
+- name: plugin
+  summary: Adaptive plugins allow users to extend Adaptive's capabilities
+  docs: https://documentation.adaptive.live/developer-guide/plugins
+- name: s3
+  summary: Copy and list objects against an S3 endpoint
+  note: Added in v1.1.8; records asciinema events and enforces JIT pre-flight checks.
+- name: script
+  summary: Execute a script or create a new one
+- name: stop
+  summary: Stop an endpoint by its name
+- name: version
+  summary: Show CLI version
+command_count: 16
+contexts_and_profiles:
+  supported: true
+  detail: >-
+    Kubernetes-style contexts let one CLI install address several Adaptive deployments.
+  examples:
+  - adaptive login --context-name staging --url https://staging.url.com
+  - adaptive login --context-name production --url https://prod.url.com
+  - adaptive connect --context-name staging staging.db-001
+  - adaptive context
+  - adaptive context use staging
+  - adaptive context add dev https://dev.url.com
+related_clis:
+- name: Adaptive CLI - Admin
+  docs: https://documentation.adaptive.live/developer-guide/admin-cli
+  detail: The `admin` subcommand surface for creating resources, endpoints and authorizations.
+- name: Web CLI
+  docs: https://documentation.adaptive.live/developer-guide/web-cli
+  detail: Browser-hosted terminal; also carries SFTP via Web CLI.
+- name: Booster CLI
+  docs: https://documentation.adaptive.live/developer-guide/booster-cli
+  detail: Separate tool for Adaptive's booster component (see also adaptive-scale/booster-terraform).
+- name: Desktop App
+  docs: https://documentation.adaptive.live/developer-guide/desktop-app/overview
+  detail: GUI counterpart to the CLI for endpoint access.

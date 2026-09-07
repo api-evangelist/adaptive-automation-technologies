@@ -1,0 +1,101 @@
+generated: '2026-09-07'
+method: searched
+source: https://documentation.adaptive.live/releases
+description: >-
+  Adaptive publishes release notes for the self-hosted/managed platform inside its
+  documentation, one page per release line, with Added / Changed / Improved / Fixed
+  sections. The notes are undated — no release page carries a publication date — so the
+  ordering below is the provider's own (newest line first) rather than a chronology we can
+  vouch for. This changelog covers the PLATFORM version (v1.1.x current); it is not the
+  same axis as the REST API path version, which is v3 and is not versioned in these notes.
+url: https://documentation.adaptive.live/releases
+scheme: semver
+scheme_detail: >-
+  Major.minor.patch on the platform artifact (v0.5.8, v1.0.0, v1.1.8). The v1.1.x line is
+  labelled "Latest" in the docs navigation and has its own documentation tree at
+  https://documentation.adaptive.live/v1.1.x/.
+current_version: v1.1.8
+dates_published: false
+dates_note: >-
+  No release page states a date. The version-dated evidence that does exist lives in the
+  package registries — the Terraform provider's v0.1.30 published 2026-07-15 and the Pulumi
+  Go SDK's v0.3.0 published 2026-08-26 — and those are separate artifacts from the platform.
+entries:
+- version: v1.1.8
+  date: null
+  url: https://documentation.adaptive.live/releases/v1x/v1_1_8
+  breaking: []
+  additions:
+  - MySQL Proxy with authorization and column masking, applied without client-application changes
+  - AWS SSM as a managed resource, brokering EC2 and Session Manager targets
+  - New RDP resource with improved session reliability
+  - '`adaptive s3` CLI subcommand — list, copy and manage S3 objects through a brokered, audited session'
+  - Recurring cron-style scheduled restarts for endpoints
+  - Scheduled metadata (catalog/schema) sync
+  - Access-expiry email notifications before a grant lapses
+  - Admin login lock after repeated failed logins, with configurable thresholds
+  - TLS-encrypted syslog forwarding to a SIEM
+  - Diff-based Azure AD SSO sync with structured summary events
+  - Activity logs API for external consumption
+  - Team-scoped endpoint API — add, remove and list endpoints assigned to a team
+  - Role-change audit events for auditor, operator and SOC roles
+  api_relevant:
+  - >-
+    The Activity Logs API and the Team-scoped endpoint API in this release are the origin of
+    six of the sixteen documented Client API operations (POST /activity-log and the four
+    team add/remove operations plus the team endpoint list).
+  improvements:
+  - Data Activity page no longer runs an expensive cross-table query by default
+  - Optimised activity-log fetch path; N+1 removed from Azure AD SSO sync
+  - MSSQL allow/deny policies apply per database, so one failure no longer cascades
+  - Structured MySQL proxy logs
+  - '`adaptive s3` sessions record asciinema events and enforce JIT pre-flight checks'
+  fixes:
+  - Postgres endpoint restart no longer fails on an uncleaned role from a previous session
+  - Compliance Report download reliably exports Endpoint Session Events via streamed download
+- version: v1.0.0
+  date: null
+  url: https://documentation.adaptive.live/releases/v1-0-0
+  summary: The first stable major release of Adaptive.
+  breaking: []
+  additions:
+  - Approval Schedules for time-based access control
+  - Approved Scripts executable with authorization, including SSH password-based mechanisms
+  - Browser-based RDP with session recording
+  - SOC (Security Operations Center) user role
+  - Kafka UI, Freshservice and Ivanti integrations
+  - SSH Jump Host support
+  - Multi-approver events
+  - Script-only Terraform mode, and Group creation via Terraform
+  - MongoDB Atlas support
+  - High-availability primary/secondary background mode
+  - Data retention policy for session keystroke records
+  changes:
+  - Adaptive proxy binds to 0.0.0.0 instead of localhost
+  - Error handling uses ErrorMessage instead of Error to prevent unintended exits
+  - DSPM schema reconstruction — data discovery tables rebuilt
+- version: v0.5.8
+  date: null
+  url: https://documentation.adaptive.live/releases/v0-5-8
+  breaking: []
+  additions:
+  - Rules and alerts over database activity, with occurrence grouping and Slack/Teams delivery
+  - PostgreSQL and MongoDB adaptive proxies with per-query access control and masking
+  - MySQL proxy load balancing across multiple upstreams
+  - External access requests via API from Jira, Freshservice or ServiceNow in a single call
+  - Scoped API keys — restrict a Client API key to specific operations at creation
+  - AWS authorization (EC2, S3) via role ARN or IRSA
+  - Access matrix CSV export, saved filter views
+  - RDP recordings with in-browser playback and MP4 download
+  api_relevant:
+  - >-
+    This release introduced BOTH the access-request API (POST /api/v3/client/access-request)
+    and the scoped-key model that the ten Client App scopes implement. Existing keys were
+    explicitly left on Full access, so scope restriction is opt-in per key.
+  fixes:
+  - Commands run inside containers no longer expose credentials in process listings or logs
+  - Intermittent CLI browser-login failures fixed
+entry_count: 3
+window: >-
+  The three release pages Adaptive currently publishes. Older releases are not indexed in
+  the docs navigation.

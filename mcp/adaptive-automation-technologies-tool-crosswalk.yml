@@ -1,0 +1,141 @@
+generated: '2026-09-07'
+method: derived
+source: >-
+  https://documentation.adaptive.live/developer-guide/adaptive-api (the sixteen REST
+  operations and the ten Client App scopes) crossed with
+  https://documentation.adaptive.live/platform/organization/mcp-servers (the MCP consent
+  scopes). No OpenAPI exists for this API, so bindings are keyed on documented HTTP
+  method + path rather than on operationIds.
+description: >-
+  Adaptive's MCP server and its REST Client API are two projections of ONE authorization
+  surface: the docs state that the same Client App Client ID and Client Secret authenticate
+  both, that the MCP consent screen offers the same scope vocabulary as a restricted Client
+  App key, and that binding an MCP token to a Client App intersects the two scope sets.
+  That makes the crosswalk unusually tight — capability-for-capability — but it is a SCOPE
+  crosswalk, not a tool crosswalk: the live tool names and inputSchemas are auth-gated
+  (tools/list returned HTTP 401), so no tool name is invented below. Each row binds a
+  documented MCP capability scope to the REST operation(s) that same scope authorizes.
+surfaces:
+  openapi:
+    present: false
+    note: >-
+      Adaptive publishes no OpenAPI, Swagger, AsyncAPI, GraphQL SDL, .proto or WSDL on any
+      host probed. The REST surface is documented in prose with curl examples only.
+  rest:
+    base_url: https://app.adaptive.live
+    path_prefix: /api/v3/client
+    docs: https://documentation.adaptive.live/developer-guide/adaptive-api
+    gated: true
+    note: All sixteen paths probed anonymously on 2026-09-07 and returned HTTP 401 JSON.
+  graphql:
+    present: false
+  mcp:
+    interactive_url: https://<workspace-url>/mcp
+    headless_url: https://app.adaptive.live/api/v3/client/mcp
+    docs: https://documentation.adaptive.live/platform/organization/mcp-servers
+    gated: true
+    note: tools/list returned HTTP 401; tool names and inputSchemas require an authenticated credential.
+binding_basis: >-
+  scope-to-operation, from the provider's own two scope tables. Confidence is `high` where
+  the Client App scope table names the exact endpoints the scope allows, and `medium` where
+  the MCP consent-screen wording is a paraphrase of that table.
+crosswalk:
+- tool: users:read
+  category: directory
+  rest:
+  - GET /api/v3/client/users/list
+  binding: scope
+  confidence: high
+  note: The Client App scope table maps `users:read` to "List Users".
+- tool: resources:read
+  category: inventory
+  rest:
+  - GET /api/v3/client/resources/list
+  binding: scope
+  confidence: high
+- tool: endpoints:read
+  category: inventory
+  rest:
+  - GET /api/v3/client/endpoints/list
+  binding: scope
+  confidence: high
+- tool: schema:read
+  category: data-discovery
+  rest:
+  - GET /api/v3/client/schema/{resourceId}/info
+  binding: scope
+  confidence: high
+  note: Resource must be MySQL, PostgreSQL or SQL Server.
+- tool: authorizations:read
+  category: policy
+  rest:
+  - GET /api/v3/client/authorizations/list
+  binding: scope
+  confidence: high
+  note: The encrypted permission policy body is never returned — metadata only.
+- tool: scripts:read
+  category: automation
+  rest:
+  - GET /api/v3/client/scripts/list
+  binding: scope
+  confidence: high
+  note: The script body is never returned, because a script command can embed inline credentials.
+- tool: team:read
+  category: directory
+  rest:
+  - GET /api/v3/client/teams/list
+  - GET /api/v3/client/team/{teamId}/users/list/
+  - GET /api/v3/client/team/{teamId}/endpoint/list/
+  binding: scope
+  confidence: high
+  note: The scope table maps `team:read` to "List Teams / List Users / Endpoints of a Team".
+- tool: team:write
+  category: directory
+  rest:
+  - POST /api/v3/client/team/users/add
+  - POST /api/v3/client/team/users/remove
+  - POST /api/v3/client/team/endpoint/add
+  - POST /api/v3/client/team/endpoint/remove
+  binding: scope
+  confidence: high
+  note: Only API-managed teams may be modified through these operations.
+- tool: activity:read
+  category: audit
+  rest:
+  - POST /api/v3/client/activity-log
+  binding: scope
+  confidence: high
+  note: Streams CSV, not JSON; designed for SIEM and compliance bulk export.
+- tool: access-request:write
+  category: access-control
+  rest:
+  - POST /api/v3/client/access-request
+  binding: scope
+  confidence: high
+  note: >-
+    Creates AND decides an access request in one call. This is the only write in the surface
+    that grants standing or time-bound access to infrastructure.
+- tool: endpoints:read + users:read
+  category: compliance
+  rest:
+  - GET /api/v3/client/endpoints/with-users
+  binding: scope
+  confidence: high
+  note: >-
+    The one operation requiring TWO scopes. A restricted key holding only one is rejected
+    with 403, deliberately so that `endpoints:read` cannot implicitly enumerate users.
+mcp_only: []
+rest_only: []
+coverage:
+  rest_operations_documented: 16
+  rest_operations_bound: 16
+  mcp_capability_scopes_documented: 10
+  mcp_capability_scopes_bound: 10
+  mcp_only_count: 0
+  rest_only_count: 0
+  note: >-
+    Full parity, by construction rather than by coincidence: the MCP server is a projection
+    of the same Client API behind the same credential and the same scope vocabulary. The
+    sixteen documented operations collapse to eleven crosswalk rows because several
+    operations share one scope. No divergence was found, and none is claimed beyond what the
+    two scope tables state.

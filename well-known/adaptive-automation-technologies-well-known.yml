@@ -1,0 +1,214 @@
+generated: '2026-09-07'
+method: probed
+source: Direct HTTPS probes of the named /.well-known/ path list on every host in apis.yml (registrable
+  domain + www, each API baseURL host, both docs hosts, and the CLI distribution host), 2026-09-07.
+description: 'Adaptive serves NO /.well-known/ discovery document on any host. Every named path returned
+  404 except on app.adaptive.live, where the single-page app answers 200 with its ''PAGE YOU ARE LOOKING
+  DOES NOT EXIST'' HTML shell for every path — a soft-404, recorded as a miss, not a hit. No WellKnown,
+  SecurityTxt, APICatalog or AgentCard pointer is emitted from this probe. This is a recorded absence,
+  and it is a real gap: Adaptive''s own MCP server uses OAuth with RFC 7591 dynamic client registration,
+  and the docs say the Issuer, Authorization, Token and Registration endpoints are shown inside the authenticated
+  MCP Servers tab rather than published at /.well-known/oauth-authorization-server or /.well-known/oauth-protected-resource,
+  so an MCP client cannot discover them anonymously.'
+hosts:
+- host: adaptive.live
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    file: null
+- host: www.adaptive.live
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    file: null
+- host: app.adaptive.live
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the app's SPA 'PAGE YOU ARE LOOKING DOES NOT EXIST' shell (content-type
+      text/html). Soft-404 — treated as a MISS, no document served.
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the app's SPA 'PAGE YOU ARE LOOKING DOES NOT EXIST' shell (content-type
+      text/html). Soft-404 — treated as a MISS, no document served.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the app's SPA 'PAGE YOU ARE LOOKING DOES NOT EXIST' shell (content-type
+      text/html). Soft-404 — treated as a MISS, no document served.
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the app's SPA 'PAGE YOU ARE LOOKING DOES NOT EXIST' shell (content-type
+      text/html). Soft-404 — treated as a MISS, no document served.
+  - path: /.well-known/api-catalog
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the app's SPA 'PAGE YOU ARE LOOKING DOES NOT EXIST' shell (content-type
+      text/html). Soft-404 — treated as a MISS, no document served.
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the app's SPA 'PAGE YOU ARE LOOKING DOES NOT EXIST' shell (content-type
+      text/html). Soft-404 — treated as a MISS, no document served.
+  - path: /.well-known/agent-card.json
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the app's SPA 'PAGE YOU ARE LOOKING DOES NOT EXIST' shell (content-type
+      text/html). Soft-404 — treated as a MISS, no document served.
+  - path: /.well-known/agent.json
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the app's SPA 'PAGE YOU ARE LOOKING DOES NOT EXIST' shell (content-type
+      text/html). Soft-404 — treated as a MISS, no document served.
+  - path: /.well-known/aauth-resource.json
+    status: 200
+    file: null
+    note: HTTP 200 but the body is the app's SPA 'PAGE YOU ARE LOOKING DOES NOT EXIST' shell (content-type
+      text/html). Soft-404 — treated as a MISS, no document served.
+- host: documentation.adaptive.live
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    file: null
+- host: docs.adaptive.live
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    file: null
+- host: cli.adaptive.live
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+  - path: /.well-known/aauth-resource.json
+    status: 404
+    file: null
+hits: 0
+x-evidence:
+- url: https://adaptive.live/.well-known/security.txt
+  http_status: 404
+- url: https://app.adaptive.live/.well-known/oauth-authorization-server
+  http_status: 200
+  note: SPA shell, content-type text/html — soft-404, not a document.
+- url: https://documentation.adaptive.live/.well-known/api-catalog
+  http_status: 404

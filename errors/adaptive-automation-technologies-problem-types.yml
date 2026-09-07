@@ -1,0 +1,128 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://documentation.adaptive.live/developer-guide/adaptive-api — the per-operation error
+  tables published for the Activity Log and Access Request endpoints, plus the scope-denial
+  behaviour documented for restricted keys, plus the 401 envelope observed live on all
+  sixteen paths on 2026-09-07. No OpenAPI exists, so nothing here is derived from a spec.
+description: >-
+  The Adaptive Client API's error catalog. It is NOT RFC 9457 — responses are a plain JSON
+  object with a single human-readable `error` string and no type URI, code or field pointer,
+  so a client has to branch on the status code and, where that is ambiguous, on message text.
+  Adaptive publishes explicit error tables for its two richest endpoints and leaves the
+  remaining fourteen to the shared auth/scope errors.
+format: json
+rfc9457: false
+media_type: application/json; charset=utf-8
+envelope:
+  shape: '{"error": "<message>"}'
+  fields:
+    error:
+      type: string
+      description: Human-readable message. No stable machine code accompanies it.
+  observed: '{"error":"bad service token: empty service token"}'
+  observed_at: '2026-09-07'
+  caveat: >-
+    Message strings are the only discriminator within a status code, and they are not
+    documented as stable. Matching on them is brittle by construction.
+problem_types:
+- status: 401
+  title: Missing or invalid credential
+  message: 'bad service token: empty service token'
+  applies_to: all sixteen operations
+  cause: >-
+    The X-Client-ID header, the Authorization Bearer client secret, or both are absent or
+    invalid.
+  remediation: >-
+    Send both headers. The client secret is displayed only once at Client App creation and
+    cannot be recovered; if it is lost, delete the app and create a new one.
+  method: probed
+  evidence: >-
+    Observed on GET /api/v3/client/users/list, /resources/list, /endpoints/list,
+    /teams/list, /authorizations/list, /scripts/list, /endpoints/with-users and on POST
+    /activity-log, /access-request, /team/users/add — 2026-09-07.
+- status: 403
+  title: Operation not permitted for this key
+  message: operation not permitted for this key
+  applies_to: any operation whose scope the restricted key does not hold
+  cause: >-
+    The Client App is Restricted rather than Full access and lacks a required scope. For
+    GET /api/v3/client/endpoints/with-users this fires when the key holds only ONE of
+    endpoints:read and users:read.
+  remediation: >-
+    Scopes cannot be edited after creation. Delete the key and create a new one with the
+    scopes the operation requires.
+  method: searched
+- status: 400
+  title: Missing or malformed activity-log date range
+  applies_to: POST /api/v3/client/activity-log
+  cause: >-
+    startDate or endDate absent or malformed, or endDate is less than or equal to startDate.
+    Both must be UTC timestamps formatted YYYY-MM-DDTHH:MM:SSZ.
+  remediation: Send an inclusive startDate and an exclusive endDate in the documented format.
+  method: searched
+- status: 400
+  title: Invalid JSON body
+  applies_to: [POST /api/v3/client/activity-log, POST /api/v3/client/access-request]
+  cause: The request body did not parse as JSON.
+  remediation: Send well-formed JSON with Content-Type application/json.
+  method: searched
+- status: 500
+  title: Internal error while reading activity logs
+  applies_to: POST /api/v3/client/activity-log
+  cause: Server-side failure during the log scan.
+  remediation: Retry. Ranges over 24 hours are scanned server-side one day at a time.
+  method: searched
+- status: 400
+  title: Invalid decision
+  applies_to: POST /api/v3/client/access-request
+  cause: '`decision` is not exactly `approve` or `reject`.'
+  remediation: Send decision as approve or reject.
+  method: searched
+- status: 400
+  title: Missing required access-request field
+  applies_to: POST /api/v3/client/access-request
+  cause: One of resourceId, endpointId or reason is absent.
+  remediation: Supply all three.
+  method: searched
+- status: 400
+  title: Duration required for temporary access
+  applies_to: POST /api/v3/client/access-request
+  cause: accessType is `tempaccess` but `duration` was not supplied.
+  remediation: Supply a TTL such as 8h or 30m, or use accessType permaccess.
+  method: searched
+- status: 400
+  title: Ambiguous or unresolvable requester
+  applies_to: POST /api/v3/client/access-request
+  cause: >-
+    Neither or BOTH of userId and userEmail were provided, or the named requester is not a
+    member of the key's workspace.
+  remediation: Supply exactly one of userId or userEmail, naming a user in the key's workspace.
+  method: searched
+- status: 403
+  title: Access-request scope missing
+  applies_to: POST /api/v3/client/access-request
+  cause: The key is restricted and lacks access-request:write.
+  remediation: Reissue the key with access-request:write, or use a Full access key.
+  method: searched
+- status: 500
+  title: Internal error while creating or deciding the request
+  applies_to: POST /api/v3/client/access-request
+  cause: Server-side failure.
+  remediation: >-
+    Retry with care — there is no idempotency mechanism on this endpoint, so a blind retry
+    may create a second access request. Reconcile against the activity log before retrying.
+  method: searched
+non_error_warning:
+  applies_to: POST /api/v3/client/access-request
+  status: 200
+  detail: >-
+    Not an error, but a case a client must handle: if an auto-approval or auto-rejection
+    schedule already decided the request at creation time, that decision stands. The 200
+    response then reports the ACTUAL status with "decidedBy": "schedule" and includes a
+    `warning` when it differs from the decision the caller asked for. A caller that reads
+    only the HTTP status will believe its own decision was applied.
+problem_type_count: 11
+coverage_note: >-
+  Adaptive documents error tables for two of sixteen operations. The other fourteen publish
+  no per-operation error list; only the shared 401 and 403 above are established for them.
