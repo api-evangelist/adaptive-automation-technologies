@@ -118,6 +118,8 @@ apis:
   - type: ToolCrosswalk
     url: mcp/adaptive-automation-technologies-tool-crosswalk.yml
 common:
+- type: RateLimits
+  url: rate-limits/adaptive-automation-technologies-rate-limits.yml
 - type: Website
   url: https://adaptive.live/
 - type: DeveloperPortal
