@@ -65,7 +65,7 @@ apis:
   humanURL: https://documentation.adaptive.live/developer-guide/adaptive-api
   baseURL: https://app.adaptive.live
   tags:
-  - Access Management
+  - Identity and Access Management
   - Audit
   - Identity
   - Compliance
@@ -105,7 +105,7 @@ apis:
   tags:
   - MCP
   - Agents
-  - Access Management
+  - Identity and Access Management
   tags_raw:
   - Model Context Protocol
   - Agents
