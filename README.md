@@ -64,27 +64,128 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Adaptive Automation Technologies, Inc. — trading as **Adaptive** — builds a privileged access
-management and data security platform that brokers credential-less, fully audited access to
-databases, Kubernetes clusters, virtual machines, cloud accounts, network appliances and internal
-web services, for both human operators and autonomous AI agents. It is sold as three surfaces:
-**Bastion/Stratos** (just-in-time infrastructure and browser access with SSO and MFA), **Exo** (a
-secure agent harness with a tools/MCP registry, scoped networking and guardrails), and a shared
-trust layer covering authorization, audit, data masking, database activity monitoring, discovery
-and classification, and compliance reporting.
+Adaptive Automation Technologies, Inc. — trading as Adaptive (adaptive.live) — builds a privileged access management and data security platform that brokers credential-less, fully audited access to databases, Kubernetes clusters, virtual machines, cloud accounts, network appliances and internal web services for both human operators and autonomous AI agents. The platform is sold as three surfaces: Bastion/Stratos (just-in-time infrastructure and browser access with SSO and MFA), Exo (a secure agent harness with a tools/MCP registry, scoped networking and guardrails), and a shared trust layer covering authorization, audit, data masking, database activity monitoring, discovery and classification, and compliance reporting. Adaptive exposes a documented sixteen-operation REST Client API at /api/v3/client, a built-in remote MCP server secured by OAuth with RFC 7591 dynamic client registration, a cross-platform CLI, and first-party Terraform and Pulumi providers. It runs as managed cloud on app.adaptive.live or self-hosted on Kubernetes, Docker or an air-gapped VM.
 
-Adaptive exposes a documented sixteen-operation REST Client API under `/api/v3/client`, a built-in
-remote MCP server secured by OAuth with RFC 7591 dynamic client registration, a cross-platform CLI,
-and first-party Terraform and Pulumi providers. It runs as managed cloud on `app.adaptive.live` or
-self-hosted on Kubernetes, Docker or an air-gapped VM. No OpenAPI, AsyncAPI, GraphQL SDL, Protobuf
-or WSDL is published on any host.
+**Areas:** Company · Security · Privileged Access Management · Identity and Access Management · Data Security · Agents · MCP · Infrastructure · Database · Kubernetes · Compliance · Audit
 
-- Website: https://adaptive.live/
-- Documentation: https://documentation.adaptive.live/
-- API reference: https://documentation.adaptive.live/developer-guide/adaptive-api
-- MCP servers: https://documentation.adaptive.live/platform/organization/mcp-servers
-- GitHub: https://github.com/adaptive-scale
+## Adaptive Automation Technologies on APIs.io
 
-> The previous stub listed `https://www.nasdaqprivatemarket.com/` as this company's website. That
-> was the secondary-market venue the company was surfaced from, not a site the company operates,
-> and it has been corrected.
+Everything profiled for Adaptive Automation Technologies is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/adaptive-automation-technologies/](https://apis.io/providers/adaptive-automation-technologies/)** — or go straight to one of the APIs or properties below.
+
+### APIs (2)
+
+- [Adaptive Client API](https://apis.io/apis/adaptive-automation-technologies/adaptive-automation-technologies-client-api/) — The Adaptive Client API is a sixteen-operation REST API under /api/v3/client that exposes an Adaptive workspace to external systems: list users, resources,…
+- [Adaptive MCP Server](https://apis.io/apis/adaptive-automation-technologies/adaptive-automation-technologies-mcp-server/) — Adaptive ships a built-in Model Context Protocol server that lets AI agents — Claude, Cursor, VS Code and other MCP clients — work with an Adaptive…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Adaptive Automation Technologies Webhooks](https://apis.io/asyncapis/adaptive-automation-technologies/adaptive-automation-technologies-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [adaptive-automation-technologies-mcp.yml](https://apis.io/servers/adaptive-automation-technologies/adaptive-automation-technologies-mcp-yml/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Adaptive Automation Technologies Authentication](https://apis.io/security/adaptive-automation-technologies/adaptive-automation-technologies-authentication/)
+- [Adaptive Automation Technologies Domain Security](https://apis.io/security/adaptive-automation-technologies/adaptive-automation-technologies-domain-security/)
+- [Adaptive Automation Technologies Trust Center](https://apis.io/security/adaptive-automation-technologies/adaptive-automation-technologies-trust-center/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Adaptive Automation Technologies Scopes](https://apis.io/scopes/adaptive-automation-technologies/adaptive-automation-technologies-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Adaptive Automation Technologies Plans Pricing](https://apis.io/plans/adaptive-automation-technologies/adaptive-automation-technologies-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Adaptive Automation Technologies Rate Limits](https://apis.io/rate-limits/adaptive-automation-technologies/adaptive-automation-technologies-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://adaptive.live/)
+- [Documentation](https://documentation.adaptive.live/)
+- [Getting started](https://documentation.adaptive.live/install/cloud-setup)
+- [API reference](https://documentation.adaptive.live/developer-guide/adaptive-api)
+- [Pricing](https://adaptive.live/pricing)
+- [Sign up](https://app.adaptive.live/)
+- [Support](https://documentation.adaptive.live/overview/faqs)
+- [Blog](https://adaptive.live/blog)
+- [Terms of service](https://adaptive.live/terms-and-conditions)
+- [Privacy policy](https://adaptive.live/privacy-policy)
+- [GitHub](https://github.com/adaptive-scale)
+
+## API Evangelist rating
+
+**Kin Score 52.8** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 39.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 26.3 |
+| Developer ergonomics | 71.4 |
+| Access clarity | 60.5 |
+
+**Agent readiness 28.6** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 39.2** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/adaptive-automation-technologies/](https://apis.io/providers/adaptive-automation-technologies/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Adaptive Automation Technologies: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/adaptive-automation-technologies/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
